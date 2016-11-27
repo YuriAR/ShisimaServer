@@ -43,16 +43,12 @@ public class Player implements Runnable{
 
                 Thread.sleep(500);
             }
-            catch (EOFException e){
-                opponent.notifyDisconnection();
-                System.out.print("Player desconectado");
-                run = false;
-            }
-            catch (Exception e) {
-                e.printStackTrace();
+            catch (Exception e){
                 run = false;
             }
         }
+        opponent.notifyDisconnection();
+        System.out.print("Player desconectado");
     }
 
     public void notifyConnection(Integer position){
