@@ -2,6 +2,8 @@ package com.company;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -41,9 +43,18 @@ public class Player implements Runnable{
             }
             catch (Exception e){
                 e.printStackTrace();
+                //Disconnected
                 break;
             }
         }
         Main.games--;
+    }
+
+    public void notifyConnection(Integer position){
+        try {
+            output.writeUTF("0-" + position.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
