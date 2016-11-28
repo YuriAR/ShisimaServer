@@ -39,7 +39,7 @@ public class Player implements Runnable{
             try{
                 String received1 = input.readUTF();
                 opponent.output.writeUTF(received1);
-                System.out.print(received1);
+                System.out.print(received1 + "\n");
 
                 Thread.sleep(500);
             }
@@ -48,7 +48,7 @@ public class Player implements Runnable{
             }
         }
         opponent.notifyDisconnection();
-        System.out.print("Player desconectado");
+        System.out.print("Player desconectado \n");
     }
 
     public void notifyConnection(Integer position){
@@ -63,7 +63,7 @@ public class Player implements Runnable{
         try {
             output.writeUTF("5-0");
             output.close();
-            Main.games--;
+            Main.playersOnline--;
         } catch (IOException e) {
             e.printStackTrace();
         }
