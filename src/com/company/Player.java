@@ -37,6 +37,7 @@ public class Player implements Runnable{
         boolean run = true;
         while (run){
             try{
+                //Le do player e manda para o oponente
                 String received1 = input.readUTF();
                 opponent.output.writeUTF(received1);
                 System.out.print(received1 + "\n");
@@ -51,6 +52,7 @@ public class Player implements Runnable{
         System.out.print("Player desconectado \n");
     }
 
+    //Notifica quando um player conecta (indica se ele é o player 1 ou player 2)
     public void notifyConnection(Integer position){
         try {
             output.writeUTF("0-" + position.toString());
@@ -59,6 +61,8 @@ public class Player implements Runnable{
         }
     }
 
+
+    //Notifica o player quando o oponente desconecta
     public void notifyDisconnection(){
         try {
             output.writeUTF("5-0");
