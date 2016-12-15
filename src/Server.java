@@ -1,17 +1,16 @@
-package com.company;
-
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by yurireis on 10/12/16.
  */
 public class Server extends UnicastRemoteObject implements MessagingInterface{
-
-    List<String> msgToP1 = new ArrayList<>();
-    List<String> msgToP2 = new ArrayList<>();
+    ArrayList<String> msgToP1 = new ArrayList<>();
+    ArrayList<String> msgToP2 = new ArrayList<>();
     Integer player = 1;
 
     public Server() throws RemoteException{
@@ -20,26 +19,23 @@ public class Server extends UnicastRemoteObject implements MessagingInterface{
     }
 
     @Override
-    public String getRemoteMessage(Integer player) throws RemoteException {
+    public List<String> getRemoteMessage(Integer player) throws RemoteException {
         switch (player){
             case 1:
-                if (msgToP1.size() > 0) {
-                    String message = msgToP1.get(0);
-                    msgToP1.remove(0);
-                    return message;
-                }
+                List<String> toReturnP1 = new ArrayList<>(msgToP1);
+                msgToP1.clear();
+                return toReturnP1;
             case 2:
-                if (msgToP2.size() > 0) {
-                    String message = msgToP2.get(0);
-                    msgToP2.remove(0);
-                    return message;
-                }
+                List<String> toReturnP2 = new ArrayList<>(msgToP2);
+                msgToP2.clear();
+                return toReturnP2;
         }
         return null;
     }
 
     @Override
     public void sendRemoteMessage(String msg, Integer player) throws RemoteException {
+        System.out.println("Message: " + msg + " From: P " + player + "\n");
         switch (player){
             case 1:
                 msgToP2.add(msg);
@@ -58,6 +54,8 @@ public class Server extends UnicastRemoteObject implements MessagingInterface{
         }
         else{
             player --;
+            msgToP1.add("0-1");
+            msgToP2.add("0-2");
             return 2;
         }
     }
